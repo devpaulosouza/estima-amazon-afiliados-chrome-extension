@@ -26,8 +26,6 @@ Exemplo real do funcionamento:
 
 ![Preview da extensão](screenshot.png)
 
-*(adicione `screenshot.png` no repositório conforme o print que quiser usar)*
-
 ---
 
 ## 📌 Funcionalidades
