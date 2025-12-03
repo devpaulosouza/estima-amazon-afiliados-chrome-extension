@@ -1,0 +1,17 @@
+{
+  "manifest_version": 3,
+  "name": "Amazon Afiliados - Calculadora de Comissão",
+  "version": "1.0",
+  "description": "Lê a tabela de pedidos e calcula automaticamente o total de comissão.",
+  "content_scripts": [
+    {
+      "matches": [
+        "https://associados.amazon.com.br/*",
+        "https://assoc-data.amazon.com/*"
+      ],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}
+
