@@ -13,12 +13,27 @@ Desenvolvida originalmente para facilitar a vida do glorioso Zé Bunda 🐦🤖�
 
 ---
 
+## 🖼️ Preview da Extensão
+
+A extensão adiciona automaticamente um pequeno painel no canto superior direito da tela mostrando:
+
+- Total dos pedidos  
+- Total estimado da comissão  
+
+Segue um exemplo real de como ela aparece durante o uso:
+
+![Preview da extensão](screenshot.png)
+
+*(coloque `screenshot.png` na raiz do repositório ou ajuste o nome conforme o arquivo que você subir)*
+
+---
+
 ## 📌 Funcionalidades
 - Lê automaticamente a tabela de pedidos do painel da Amazon Afiliados.
 - Identifica a categoria de cada item e aplica a porcentagem de comissão correta.
 - Soma automaticamente o valor total dos pedidos.
 - Calcula a comissão estimada com base na tabela oficial da Amazon.
-- Exibe um box fixo no canto da tela com os totais.
+- Exibe um box fixo na tela com os totais.
 - **Detecta automaticamente mudanças de página e filtros** (via MutationObserver).
 - Funciona mesmo quando o site usa carregamento dinâmico (AJAX).
 
@@ -89,6 +104,21 @@ Originally crafted to make life easier for the mighty Zé Bunda 🐦🤖✨
 
 ---
 
+## 🖼️ Extension Preview
+
+The extension automatically adds a small floating panel in the top-right corner of the page showing:
+
+- Total order value  
+- Estimated commission  
+
+Here’s an example of how it looks in action:
+
+![Extension preview](screenshot.png)
+
+*(place `screenshot.png` in the repository root or adjust to whatever filename you upload)*
+
+---
+
 ## 📌 Features
 - Automatically reads the orders table from Amazon Affiliates.
 - Detects item categories and applies the correct commission percentage.
@@ -108,34 +138,6 @@ Originally crafted to make life easier for the mighty Zé Bunda 🐦🤖✨
 4. Click **"Load unpacked"**.
 5. Select the extension folder.
 6. Open the Amazon Affiliates dashboard — the calculator will appear automatically.
-
----
-
-## 🛠 Files
-- `manifest.json` – extension configuration.
-- `content.js` – script that reads the table, calculates totals, and auto-updates.
-
----
-
-## 📘 How it works
-The extension:
-1. Finds the orders table.
-2. Reads each row and extracts:
-   - Category  
-   - Price  
-3. Applies the corresponding commission rate.
-4. Automatically refreshes calculations whenever:
-   - the page changes,  
-   - filters are applied,  
-   - the table content updates.
-
----
-
-## 🧪 Future Improvements
-- Extra table column with commission per item  
-- Export to CSV/Excel  
-- Customizable commission percentages  
-- Dark mode for the summary box  
 
 ---
 
