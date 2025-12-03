@@ -17,73 +17,94 @@ Desenvolvida originalmente para facilitar a vida do glorioso Zé Bunda 🐦🤖�
 
 A extensão adiciona automaticamente um pequeno painel no canto superior direito da tela mostrando:
 
-- Total dos pedidos  
-- Total estimado da comissão  
+- Total da página atual  
+- Comissão da página atual  
+- **Total acumulado entre páginas**  
+- **Comissão acumulada entre páginas**
 
-Segue um exemplo real de como ela aparece durante o uso:
+Exemplo real do funcionamento:
 
 ![Preview da extensão](screenshot.png)
 
-*(coloque `screenshot.png` na raiz do repositório ou ajuste o nome conforme o arquivo que você subir)*
+*(adicione `screenshot.png` no repositório conforme o print que quiser usar)*
 
 ---
 
 ## 📌 Funcionalidades
-- Lê automaticamente a tabela de pedidos do painel da Amazon Afiliados.
-- Identifica a categoria de cada item e aplica a porcentagem de comissão correta.
-- Soma automaticamente o valor total dos pedidos.
-- Calcula a comissão estimada com base na tabela oficial da Amazon.
-- Exibe um box fixo na tela com os totais.
-- **Detecta automaticamente mudanças de página e filtros** (via MutationObserver).
-- Funciona mesmo quando o site usa carregamento dinâmico (AJAX).
+- Lê automaticamente a tabela de pedidos no painel da Amazon Afiliados.  
+- Identifica cada categoria e aplica a porcentagem correta.  
+- Soma automaticamente:
+  - **O total da página atual**, e  
+  - **Um acumulado geral entre páginas visitadas na sessão**.  
+- **Evita duplicações**: se você voltar para uma página já visitada, ela **não é somada novamente** ao acumulado.  
+- Perfeito para navegar página por página e obter um total geral confiável.  
+- Atualiza automaticamente quando:
+  - a paginação muda,  
+  - filtros são aplicados,  
+  - a tabela recarrega via AJAX.  
+- 100% local, sem enviar dados para nenhum servidor.  
+- Manifest V3 compatível.
+
+---
+
+## 🔒 Segurança e Conformidade com a Amazon
+
+Esta extensão é totalmente segura e não infringe nenhuma política da Amazon.
+
+### ✔️ O que ela faz
+- Lê apenas informações **já exibidas na tela**.  
+- Processa tudo **localmente**, sem comunicação externa.  
+- Exibe um painel com cálculos da sessão.
+
+### ❌ O que ela NÃO faz
+- Não coleta, armazena ou envia dados.  
+- Não altera o funcionamento da Amazon.  
+- Não automatiza cliques ou ações.  
+- Não interfere no programa de afiliados.  
+- Não modifica links, cookies ou pedidos.
+
+### 🟢 Conclusão
+O comportamento é equivalente a você usar uma calculadora enquanto navega.
 
 ---
 
 ## 🚀 Instalação (Modo Desenvolvedor)
-1. Baixe ou clone este repositório.
-2. Abra o Chrome e vá para:  
-   `chrome://extensions/`
-3. Ative o **Modo de desenvolvedor**.
-4. Clique em **"Carregar sem compactação" / "Load unpacked"**.
-5. Selecione a pasta da extensão.
-6. Abra o painel da Amazon Afiliados e pronto!  
-   A calculadora aparece automaticamente no canto superior direito.
+1. Baixe ou clone este repositório.  
+2. Abra Chrome e acesse: `chrome://extensions/`  
+3. Ative o **Modo desenvolvedor**.  
+4. Clique em **Carregar sem compactação / Load unpacked**.  
+5. Selecione a pasta da extensão.  
+6. Abra o painel da Amazon Afiliados — o cálculo aparecerá automaticamente.
 
 ---
 
 ## 🛠 Arquivos
-- `manifest.json` – define permissões e scripts.
-- `content.js` – script que lê a tabela, calcula tudo e atualiza dinamicamente.
+- `manifest.json` – configuração  
+- `content.js` – lógica de leitura, cálculo e acúmulo entre páginas  
 
 ---
 
 ## 📘 Como funciona
-A lógica principal:
-1. O script encontra a tabela de pedidos.
-2. Lê cada linha e extrai:
-   - Categoria  
-   - Preço  
-3. Aplica a taxa de comissão correspondente.
-4. Atualiza os resultados automaticamente sempre que:
-   - a página muda,  
-   - filtros são aplicados,  
-   - a tabela é atualizada dinamicamente.
+1. O script identifica a tabela.  
+2. Extrai categoria e preço de cada item.  
+3. Calcula o total da **página atual**.  
+4. Cria uma chave única para cada linha e mantém um conjunto de linhas já vistas.  
+5. Soma para o **acumulado global** apenas as linhas ainda não vistas.  
+6. Recalcula tudo sempre que a tabela da página muda.
 
 ---
 
 ## 🧪 Melhorias Futuras
-- Coluna adicional na tabela com comissão por item  
-- Exportação para CSV/Excel  
-- Customização das taxas de comissão  
-- Modo escuro do painel de resumo  
+- Botão para **resetar o acumulado** sem precisar atualizar a página  
+- Coluna extra com comissão por item  
+- Exportação CSV/Excel  
+- Tema escuro do painel  
 
 ---
 
 ## 📜 Licença – MIT
-Este projeto está licenciado sob a **MIT License**.  
-Você pode usar, copiar, modificar, mesclar, publicar, distribuir, sublicenciar e/ou vender cópias deste software livremente.
-
-O texto completo da licença está disponível no arquivo `LICENSE`.
+Este projeto está licenciado sob a **MIT License**, permitindo uso, cópia, modificação e distribuição livremente.  
+Consulte o arquivo `LICENSE` para mais detalhes.
 
 ---
 
@@ -92,8 +113,8 @@ O texto completo da licença está disponível no arquivo `LICENSE`.
 # Amazon Affiliates – Automatic Commission Calculator  
 Chrome Extension
 
-A simple and efficient Chrome extension that automatically calculates the total order value and estimated commission on the Amazon Brazil Affiliates dashboard.  
-Originally crafted to make life easier for the mighty Zé Bunda 🐦🤖✨
+A simple and efficient extension that automatically calculates the order total and estimated commission in the Amazon Brazil Affiliates dashboard.  
+Originally created to help the mighty Zé Bunda 🐦🤖✨
 
 ---
 
@@ -106,44 +127,37 @@ Originally crafted to make life easier for the mighty Zé Bunda 🐦🤖✨
 
 ## 🖼️ Extension Preview
 
-The extension automatically adds a small floating panel in the top-right corner of the page showing:
+The extension displays a floating panel showing:
 
-- Total order value  
-- Estimated commission  
-
-Here’s an example of how it looks in action:
+- Current page total  
+- Current page commission  
+- **Accumulated total across pages**  
+- **Accumulated commission across pages**  
 
 ![Extension preview](screenshot.png)
-
-*(place `screenshot.png` in the repository root or adjust to whatever filename you upload)*
 
 ---
 
 ## 📌 Features
-- Automatically reads the orders table from Amazon Affiliates.
-- Detects item categories and applies the correct commission percentage.
-- Automatically sums the total value of orders.
-- Calculates the estimated commission using Amazon’s official rates.
-- Displays a floating summary box on the top-right corner.
-- **Auto-updates when pages or filters change** (via MutationObserver).
-- Works even when the dashboard loads data dynamically.
+- Automatically reads the Amazon Affiliates order table.  
+- Calculates current page values.  
+- **Accumulates totals across visited pages** during the session.  
+- **Prevents duplication** when revisiting pages.  
+- Reactively updates when filters or pagination change.  
+- Fully local, no external communication.  
+- Manifest V3 compatible.
 
 ---
 
-## 🚀 Installation (Developer Mode)
-1. Download or clone this repository.
-2. Open Chrome and go to:  
-   `chrome://extensions/`
-3. Enable **Developer mode**.
-4. Click **"Load unpacked"**.
-5. Select the extension folder.
-6. Open the Amazon Affiliates dashboard — the calculator will appear automatically.
+## 🔒 Safety and Amazon Compliance
+This extension is safe and compliant.
+
+It does **not** collect data, store information, alter Amazon functionality, automate actions, or interfere with affiliate links.
+
+It simply processes what is already visible on the screen.
 
 ---
 
 ## 📜 License – MIT
-This project is licensed under the **MIT License**.  
-You may use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of this software freely.
-
-See the full license text in the `LICENSE` file.
+Licensed under the MIT License. See `LICENSE` for details.
 

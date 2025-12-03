@@ -135,6 +135,20 @@
     return tables[0];
   }
 
+  // ---- ACÚMULO ENTRE PÁGINAS ----
+  // Conjunto com chaves únicas das linhas já consideradas no acumulado
+  const seenRowKeys = new Set();
+  let globalTotalValue = 0;
+  let globalTotalCommission = 0;
+
+  function getRowKey(row) {
+    // Usa o texto inteiro da linha como "assinatura"
+    // Se a mesma linha aparecer em outra página, a key será igual.
+    return (row.innerText || "")
+      .replace(/\s+/g, " ")
+      .trim();
+  }
+
   function calculateCommission() {
     const table = findOrdersTable();
     if (!table) return;
@@ -143,8 +157,8 @@
     if (!rows.length) rows = table.querySelectorAll("tr");
     if (!rows.length) return;
 
-    let totalValue = 0;
-    let totalCommission = 0;
+    let pageValue = 0;
+    let pageCommission = 0;
 
     rows.forEach(row => {
       const cells = row.querySelectorAll("td");
@@ -158,14 +172,23 @@
       const rate = getCommissionRate(category);
       const commission = price * rate;
 
-      totalValue += price;
-      totalCommission += commission;
+      // Sempre soma o total da página atual
+      pageValue += price;
+      pageCommission += commission;
+
+      // Agora cuida do ACUMULADO (sem repetir)
+      const key = getRowKey(row);
+      if (!seenRowKeys.has(key)) {
+        seenRowKeys.add(key);
+        globalTotalValue += price;
+        globalTotalCommission += commission;
+      }
     });
 
-    showResult(totalValue, totalCommission);
+    showResult(pageValue, pageCommission, globalTotalValue, globalTotalCommission);
   }
 
-  function showResult(totalValue, totalCommission) {
+  function showResult(pageValue, pageCommission, totalValue, totalCommission) {
     let box = document.getElementById("amazon-comissao-box");
     if (!box) {
       box = document.createElement("div");
@@ -181,30 +204,41 @@
       box.style.fontFamily = "system-ui";
       box.style.fontSize = "13px";
       box.style.boxShadow = "0 4px 10px rgba(0,0,0,0.3)";
-      box.style.maxWidth = "260px";
+      box.style.maxWidth = "280px";
       box.style.lineHeight = "1.4";
       document.body.appendChild(box);
     }
 
     box.innerHTML = `
       <strong>Resumo de Comissões</strong><br>
-      Valor total dos pedidos: <strong>R$ ${formatBRL(totalValue)}</strong><br>
-      Comissão estimada: <strong>R$ ${formatBRL(totalCommission)}</strong>
+      <span>Página atual – pedidos:</span> <strong>R$ ${formatBRL(pageValue)}</strong><br>
+      <span>Página atual – comissão:</span> <strong>R$ ${formatBRL(pageCommission)}</strong>
+      <hr style="border:0;border-top:1px solid rgba(255,255,255,0.3);margin:6px 0;">
+      <span>Acumulado – pedidos:</span> <strong>R$ ${formatBRL(totalValue)}</strong><br>
+      <span>Acumulado – comissão:</span> <strong>R$ ${formatBRL(totalCommission)}</strong><br>
+      <small style="opacity:.8;">(Acumula somente linhas únicas vistas nesta sessão)</small>
     `;
   }
 
   // --- MULTI-PÁGINAS! MutationObserver ---
   let lastHTML = "";
+  let debounceTimeout = null;
 
   const observer = new MutationObserver(() => {
     const table = findOrdersTable();
     if (!table) return;
-
     const html = table.innerHTML;
 
     if (html !== lastHTML) {
       lastHTML = html;
-      setTimeout(calculateCommission, 300);
+
+      if (debounceTimeout) {
+        clearTimeout(debounceTimeout);
+      }
+
+      debounceTimeout = setTimeout(() => {
+        calculateCommission();
+      }, 250);
     }
   });
 
